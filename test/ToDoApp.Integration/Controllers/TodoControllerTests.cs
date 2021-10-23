@@ -14,10 +14,7 @@ namespace ToDoApp.Integration.Controllers
     public class TodoControllerTests : TestBase
     {
         // O código colocado no construtor será executado antes de cada teste e antes do InitializeAsync do TestBase
-        public TodoControllerTests(ApiWebApplicationFactory factory) : base(factory)
-        {
-            Console.WriteLine("teste");
-        }
+        public TodoControllerTests(ApiWebApplicationFactory factory) : base(factory) { }
 
         [Fact]
         public async Task GetShouldReturnStatusCode200Ok()
