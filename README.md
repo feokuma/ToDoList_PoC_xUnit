@@ -8,11 +8,19 @@ Para entender melhor como controlar o ciclo de criação, população e limpeza 
 
 ## Ferramentas e bibliotecas do projeto
 
+### Ferramentas
+
 - .Net 5
+- Docker
+- Docker Compose
+
+### Bibliotecas utilizadas no projeto
+
 - xUnit
 - AutoBogus
 - EF Core 5
 - Respawn
+- Npgsql
 
 ## Antes de rodar o projeto
 
