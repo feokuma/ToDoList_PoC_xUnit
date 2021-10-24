@@ -82,8 +82,8 @@ CONTAINER ID   IMAGE            COMMAND                  CREATED         STATUS 
 
 4. Na guia **Connection** preencha os campos assim:
 
-   - **Host name/address** -> `localhost`
-   - **Maintenance database** -> `postgres-db`\*
+   - **Host name/address** -> `postgres-db`
+   - **Maintenance database** -> `ToDoApp`
    - **Username** -> `admin`
    - **Password** -> `123`
 
