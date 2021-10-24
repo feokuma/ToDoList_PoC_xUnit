@@ -56,6 +56,39 @@ Com a ferramenta instalada, execute o seguinte comando na raiz do projeto para e
 dotnet ef database update --project ./src/ToDoApp.csproj
 ```
 
+### Acessando o banco de dados com PgAdmin
+
+Para acessar os dados com o PgAdmin, certifique-se que os containeres estão sendo executados com o seguinte comando:
+
+```shell
+docker ps
+```
+
+Este comando deve mostrar os containeres em uma lista semelhante a seguinte:
+
+```shell
+CONTAINER ID   IMAGE            COMMAND                  CREATED         STATUS         PORTS                                            NAMES
+4ac545d8bca0   dpage/pgadmin4   "/entrypoint.sh"         5 minutes ago   Up 5 minutes   443/tcp, 0.0.0.0:8081->80/tcp, :::8081->80/tcp   pgadmin
+94783c9da757   postgres         "docker-entrypoint.s…"   5 minutes ago   Up 5 minutes   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp        postgres-db
+```
+
+**Configurando PgAdmin**
+
+1. Para acessar o PgAdmin utilize um browser e acesse o endereço `http://localhost:8081`. Para fazer o login no gerenciador, utilizaremos o usuário e senha (`admin@email.com` e `123`) configurados no `docker-compose.yml` que utilizados para subir os containers.
+
+2. Ao acessar o PgAdmin temos que adicionar o servidor onde está o banco de dados, que no nosso caso é o container que criamos. No meu de **Quick Links** clique em **Add New Server** e na tela que irá abrir preencha seguindo as próximas instruções.
+
+3. Na guia **General** o campo **Name** identifica o banco de dados. Sugiro utilizar **postgres-docker**
+
+4. Na guia **Connection** preencha os campos assim:
+
+   - **Host name/address** -> `localhost`
+   - **Maintenance database** -> `postgres-db`\*
+   - **Username** -> `admin`
+   - **Password** -> `123`
+
+5. Clique em **Save** para ter acesso ao banco de dados
+
 ### Executando os testes
 
 Para executar os testes do projeto é importante que o container com o banco de dados esteja em execução. Utilize o seguinte comando para executar os testes
