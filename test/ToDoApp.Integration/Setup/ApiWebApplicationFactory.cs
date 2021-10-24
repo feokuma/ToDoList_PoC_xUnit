@@ -34,6 +34,7 @@ namespace ToDoApp.Integration.Setup
         // O código que vem aqui será executado depois de passar por todos os testes
         public new void Dispose()
         {
+            Context.Database.EnsureDeleted();
             Context.Dispose();
             Scope.Dispose();
         }
