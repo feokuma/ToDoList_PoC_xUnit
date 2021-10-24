@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ToDoApp.Data;
@@ -20,6 +22,8 @@ namespace ToDoApp.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Route("todos")]
         public async Task<ActionResult<List<Todo>>> GetAsync()
         {
@@ -28,6 +32,20 @@ namespace ToDoApp.Controllers
                 .ToListAsync();
 
             return Ok(todos);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Route("todos")]
+        public async Task<ActionResult<Todo>> PostAsync([FromBody] TodoRequest todoRequest)
+        {
+            var todo = new Todo { Title = todoRequest.Title };
+            await Context.Todos.AddAsync(todo);
+            await Context.SaveChangesAsync();
+
+            return await Task.FromResult(Created($"/v1/todos/{todo.Id}", todo));
         }
     }
 }

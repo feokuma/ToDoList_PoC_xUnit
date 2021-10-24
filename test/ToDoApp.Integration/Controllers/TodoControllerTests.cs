@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Net;
+using System.Linq;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -21,7 +21,7 @@ namespace ToDoApp.Integration.Controllers
         {
             var response = await Client.GetAsync("/v1/todos");
 
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.Should().Be200Ok();
         }
 
         [Fact]
@@ -31,9 +31,51 @@ namespace ToDoApp.Integration.Controllers
             await Context.Todos.AddRangeAsync(todosExpected);
             await Context.SaveChangesAsync();
 
-            var result = await Client.GetFromJsonAsync<List<Todo>>("/v1/todos");
+            var response = await Client.GetFromJsonAsync<List<Todo>>("/v1/todos");
 
-            _ = result.Should().BeEquivalentTo(todosExpected, options => options.Excluding(x => x.CreationDate));
+            response.Should().BeEquivalentTo(todosExpected, options => options.Excluding(x => x.CreationDate));
+        }
+
+        [Fact]
+        public async Task PostAsyncShouldReturn201CreatedIfPersistsCorrectly()
+        {
+            var todoPost = new TodoRequestBuilder().Generate();
+
+            var response = await Client.PostAsJsonAsync("/v1/todos", todoPost);
+
+            response.Should().Be201Created();
+        }
+
+        [Fact]
+        public async Task PostAsyncShouldReturnLocationHeaderWithUrlToGetToDoItemCreaated()
+        {
+            var todoPost = new TodoRequestBuilder().Generate();
+
+
+            var response = await Client.PostAsJsonAsync("/v1/todos", todoPost);
+
+
+            var todoOnDatabase = Context.Todos.FirstOrDefault(x => x.Title == todoPost.Title);
+
+            response.Headers.GetValues("Location").Should().NotBeEmpty()
+                .And.Contain($"/v1/todos/{todoOnDatabase.Id}");
+        }
+
+        [Fact]
+        public async Task PostAsyncShouldReturnTodoItemCreated()
+        {
+            var todoPost = new TodoRequestBuilder().Generate();
+
+
+            var response = await Client.PostAsJsonAsync("/v1/todos", todoPost);
+
+
+            var todoReturned = await response.Content.ReadFromJsonAsync<Todo>();
+            var todoOnDatabase = Context.Todos.FirstOrDefault(x => x.Title == todoPost.Title);
+
+            todoReturned.Should().BeEquivalentTo(todoOnDatabase, options
+                => options.Using<DateTime>(ctx => ctx.Subject.Should().BeCloseTo(ctx.Expectation, TimeSpan.FromSeconds(1)))
+                    .WhenTypeIs<DateTime>());
         }
     }
 }
