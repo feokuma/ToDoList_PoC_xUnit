@@ -56,7 +56,7 @@ Com a ferramenta instalada, execute o seguinte comando na raiz do projeto para e
 dotnet ef database update --project ./src/ToDoApp.csproj
 ```
 
-### Acessando o banco de dados com PgAdmin
+## Acessando o banco de dados com PgAdmin
 
 Para acessar os dados com o PgAdmin, certifique-se que os containeres estão sendo executados com o seguinte comando:
 
@@ -89,7 +89,7 @@ CONTAINER ID   IMAGE            COMMAND                  CREATED         STATUS 
 
 5. Clique em **Save** para ter acesso ao banco de dados
 
-### Executando os testes
+## Executando os testes
 
 Para executar os testes do projeto é importante que o container com o banco de dados esteja em execução. Utilize o seguinte comando para executar os testes
 
