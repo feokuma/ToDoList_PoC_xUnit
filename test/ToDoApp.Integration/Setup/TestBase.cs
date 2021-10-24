@@ -1,7 +1,6 @@
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Npgsql;
 using Respawn;
 using ToDoApp.Data;
@@ -26,6 +25,7 @@ namespace ToDoApp.Integration.Setup
         public TestBase(ApiWebApplicationFactory factory)
         {
             Client = factory.CreateClient();
+            Client.BaseAddress = new Uri("http://localhost:5000/api/");
             Context = factory.Context;
         }
 

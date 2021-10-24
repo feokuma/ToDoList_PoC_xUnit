@@ -12,11 +12,11 @@ namespace ToDoApp.Controllers
     [ApiConventionType(typeof(DefaultApiConventions))]
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/[Controller]")]
-    public class TodoController : ControllerBase
+    public class TodosController : ControllerBase
     {
         public AppDbContext Context { get; }
 
-        public TodoController(AppDbContext context)
+        public TodosController(AppDbContext context)
         {
             Context = context;
         }

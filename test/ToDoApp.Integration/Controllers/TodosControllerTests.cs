@@ -11,15 +11,15 @@ using Xunit;
 
 namespace ToDoApp.Integration.Controllers
 {
-    public class TodoControllerTests : TestBase
+    public class TodosControllerTests : TestBase
     {
         // O código colocado no construtor será executado antes de cada teste e antes do InitializeAsync do TestBase
-        public TodoControllerTests(ApiWebApplicationFactory factory) : base(factory) { }
+        public TodosControllerTests(ApiWebApplicationFactory factory) : base(factory) { }
 
         [Fact]
         public async Task GetShouldReturnStatusCode200Ok()
         {
-            var response = await Client.GetAsync("/v1/todos");
+            var response = await Client.GetAsync("v1/todos");
 
             response.Should().Be200Ok();
         }
@@ -31,7 +31,7 @@ namespace ToDoApp.Integration.Controllers
             await Context.Todos.AddRangeAsync(todosExpected);
             await Context.SaveChangesAsync();
 
-            var response = await Client.GetFromJsonAsync<List<Todo>>("/v1/todos");
+            var response = await Client.GetFromJsonAsync<List<Todo>>("v1/todos");
 
             response.Should().BeEquivalentTo(todosExpected, options => options.Excluding(x => x.CreationDate));
         }
@@ -41,7 +41,7 @@ namespace ToDoApp.Integration.Controllers
         {
             var todoPost = new TodoRequestBuilder().Generate();
 
-            var response = await Client.PostAsJsonAsync("/v1/todos", todoPost);
+            var response = await Client.PostAsJsonAsync("v1/todos", todoPost);
 
             response.Should().Be201Created();
         }
@@ -52,7 +52,7 @@ namespace ToDoApp.Integration.Controllers
             var todoPost = new TodoRequestBuilder().Generate();
 
 
-            var response = await Client.PostAsJsonAsync("/v1/todos", todoPost);
+            var response = await Client.PostAsJsonAsync("v1/todos", todoPost);
 
 
             var todoOnDatabase = Context.Todos.FirstOrDefault(x => x.Title == todoPost.Title);
@@ -67,7 +67,7 @@ namespace ToDoApp.Integration.Controllers
             var todoPost = new TodoRequestBuilder().Generate();
 
 
-            var response = await Client.PostAsJsonAsync("/v1/todos", todoPost);
+            var response = await Client.PostAsJsonAsync("v1/todos", todoPost);
 
 
             var todoReturned = await response.Content.ReadFromJsonAsync<Todo>();
