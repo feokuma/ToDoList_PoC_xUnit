@@ -10,17 +10,17 @@ Para entender melhor como controlar o ciclo de criação, população e limpeza 
 
 ### Ferramentas
 
-- .Net 5
-- Docker
-- Docker Compose
+-   .Net 5
+-   Docker
+-   Docker Compose
 
 ### Bibliotecas utilizadas no projeto
 
-- xUnit
-- AutoBogus
-- EF Core 5
-- Respawn
-- Npgsql
+-   xUnit
+-   AutoBogus
+-   EF Core 5
+-   Respawn
+-   Npgsql
 
 ## Antes de rodar o projeto
 
@@ -48,6 +48,12 @@ Antes de executar a aplicação é necessário executar as migrations para que a
 
 ```shell
 dotnet tool install --global dotnet-ef
+```
+
+ou
+
+```shell
+dotnet tool restore
 ```
 
 Com a ferramenta instalada, execute o seguinte comando na raiz do projeto para executar as migrations:
@@ -82,10 +88,10 @@ CONTAINER ID   IMAGE            COMMAND                  CREATED         STATUS 
 
 4. Na guia **Connection** preencha os campos assim:
 
-   - **Host name/address** -> `postgres-db`
-   - **Maintenance database** -> `ToDoApp`
-   - **Username** -> `admin`
-   - **Password** -> `123`
+    - **Host name/address** -> `postgres-db`
+    - **Maintenance database** -> `ToDoApp`
+    - **Username** -> `admin`
+    - **Password** -> `123`
 
 5. Clique em **Save** para ter acesso ao banco de dados
 
