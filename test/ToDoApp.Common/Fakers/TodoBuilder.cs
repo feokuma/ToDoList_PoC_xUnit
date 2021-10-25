@@ -7,8 +7,7 @@ namespace ToDoApp.Common.Fakers
     {
         public TodoBuilder()
         {
-            var id = 1;
-            RuleFor(x => x.Id, faker => id++);
+            RuleFor(x => x.Id, faker => 0);
             RuleFor(x => x.Title, faker => faker.Name.JobType());
             RuleFor(x => x.Done, faker => faker.Random.Bool());
             RuleFor(x => x.CreationDate, faker => faker.Date.Future());

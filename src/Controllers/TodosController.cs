@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -33,6 +34,20 @@ namespace ToDoApp.Controllers
             return Ok(todos);
         }
 
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Route("{id:long}")]
+        public async Task<ActionResult<Todo>> GetAsync(long id)
+        {
+            var todoItem = await Context.Todos.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (todoItem == null)
+                return NotFound();
+
+            return Ok(todoItem);
+        }
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -43,7 +58,7 @@ namespace ToDoApp.Controllers
             await Context.Todos.AddAsync(todo);
             await Context.SaveChangesAsync();
 
-            return await Task.FromResult(Created($"/v{ApiVersion.Default.MajorVersion}/todos/{todo.Id}", todo));
+            return Created($"/v{ApiVersion.Default.MajorVersion}/todos/{todo.Id}", todo);
         }
     }
 }

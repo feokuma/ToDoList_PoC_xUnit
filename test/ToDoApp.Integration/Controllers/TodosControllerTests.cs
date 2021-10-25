@@ -37,6 +37,36 @@ namespace ToDoApp.Integration.Controllers
         }
 
         [Fact]
+        public async Task GetAsyncByIdShouldReturn404NotFoundWhenToDoItemDoesntExists()
+        {
+            var todoItem = new TodoBuilder().Generate();
+            await Context.Todos.AddAsync(todoItem);
+            await Context.SaveChangesAsync();
+            var invalidToDoItemId = todoItem.Id + 1;
+
+            var response = await Client.GetAsync($"v1/todos/{invalidToDoItemId}");
+
+            response.Should().Be404NotFound();
+        }
+
+        [Fact]
+        public async Task GetAsyncByIdShouldReturn200OkWithToDoItemWhenExistsOnDatabase()
+        {
+            var todoItems = new TodoBuilder().Generate(3);
+            await Context.Todos.AddRangeAsync(todoItems);
+            await Context.SaveChangesAsync();
+            var todoItemExpected = todoItems.First();
+
+            var response = await Client.GetAsync($"v1/todos/{todoItemExpected.Id}");
+
+            response.Should().Be200Ok();
+            var todoItemReturned = await response.Content.ReadFromJsonAsync<Todo>();
+            todoItemReturned.Should().BeEquivalentTo(todoItemExpected, options
+                => options.Using<DateTime>(ctx => ctx.Subject.Should().BeCloseTo(ctx.Expectation, TimeSpan.FromSeconds(1)))
+                    .WhenTypeIs<DateTime>());
+        }
+
+        [Fact]
         public async Task PostAsyncShouldReturn201CreatedIfPersistsCorrectly()
         {
             var todoPost = new TodoRequestBuilder().Generate();
