@@ -1,3 +1,4 @@
+using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +35,7 @@ namespace ToDoApp
                 p.SubstituteApiVersionInUrl = true;
             });
             services.AddControllers();
+            services.AddProblemDetails();
             services.AddDbContext<AppDbContext>();
             services.AddSwaggerGen();
         }
@@ -41,6 +43,8 @@ namespace ToDoApp
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
+            app.UseProblemDetails();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

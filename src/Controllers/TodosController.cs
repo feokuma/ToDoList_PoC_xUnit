@@ -24,7 +24,6 @@ namespace ToDoApp.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<List<Todo>>> GetAsync()
         {
             var todos = await Context
