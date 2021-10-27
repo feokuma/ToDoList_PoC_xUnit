@@ -26,10 +26,7 @@ namespace ToDoApp.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<Todo>>> GetAsync()
         {
-            var todos = await Context
-                .Todos
-                .ToListAsync();
-
+            var todos = await Context.Todos.ToListAsync();
             return Ok(todos);
         }
 

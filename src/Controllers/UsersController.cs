@@ -1,5 +1,10 @@
-using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ToDoApp.Data;
+using ToDoApp.Models;
 
 namespace ToDoApp.Controllers
 {
@@ -7,12 +12,22 @@ namespace ToDoApp.Controllers
     [ApiConventionType(typeof(DefaultApiConventions))]
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/[Controller]")]
-    public class UserController
+    public class UsersController : ControllerBase
     {
-        [HttpGet]
-        public void Get()
+        public AppDbContext Context { get; }
+
+        public UsersController(AppDbContext context)
         {
-            throw new NotImplementedException();
+            Context = context;
+        }
+
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<List<User>>> GetAsync()
+        {
+            var users = await Context.Users.ToListAsync();
+            return Ok(users);
         }
     }
 }
