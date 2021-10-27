@@ -11,6 +11,7 @@ namespace ToDoApp.Data
             => Configuration.GetConnectionString("Npgsql");
 
         public DbSet<Todo> Todos { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public AppDbContext(IConfiguration configuration)
         {
