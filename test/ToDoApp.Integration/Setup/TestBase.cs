@@ -6,11 +6,10 @@ using Respawn;
 using ToDoApp.Data;
 using Xunit;
 
-// Evita que duas classes de teste executem o Construtor e o InitializeAsync ao mesmo tempo
-[assembly: CollectionBehavior(DisableTestParallelization = true)]
 namespace ToDoApp.Integration.Setup
 {
-	public abstract class TestBase : IClassFixture<ApiWebApplicationFactory>, IAsyncLifetime
+	[Collection("WebApplicationFactory")]
+	public abstract class TestBase : IAsyncLifetime
 	{
 		public HttpClient Client { get; set; }
 		public AppDbContext Context { get; }
